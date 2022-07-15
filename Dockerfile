@@ -1062,7 +1062,8 @@ ADD https://raw.githubusercontent.com/xyx98/my-vapoursynth-script/master/xvs.py 
 FROM golang as bin
 COPY . . 
 # compile 
-RUN go build -o /tmp/ci-server -ldflags "-s -w" .
+RUN go mod tidy && \
+    go build -o /tmp/ci-server -ldflags "-s -w" .
 
 FROM env
 COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
