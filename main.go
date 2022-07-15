@@ -44,8 +44,8 @@ func handleRequests(listenPort string) {
 func main() {
 	log.Infoln("Simple CI/CD server by CircleDevs @ JYFansub")
 	listenPort := "127.0.0.1:33000"
-	if len(os.Args) > 1 {
-		listenPort = os.Args[1]
+	if os.Getenv("ADDR") != "" {
+		listenPort = os.Getenv("ADDR")
 	}
 
 	LoadConfig()
