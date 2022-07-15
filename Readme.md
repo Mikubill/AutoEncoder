@@ -7,7 +7,6 @@
 # Templates
 
 模版就是多个任务的组合，可以理解成简单的workflow。关于流程其他信息见`templates.yaml`，这个文件位于镜像的`/opt/`中。
-
 注意由于`scanner`的限制，部分带进度条的程序需要把进度条关掉才能正常运行。
 
 # Plugins
@@ -16,6 +15,7 @@ vs和avs以及插件都安装在`/usr/local/{lib,share}`下，如有需要可以
 
 默认编译了一部分常见的vs插件，具体如下
 
+```
 https://github.com/l-smash/l-smash.git
 https://github.com/HomeOfAviSynthPlusEvolution/L-SMASH-Works
 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain
@@ -88,6 +88,6 @@ https://github.com/vapoursynth/vs-miscfilters-obsolete
 https://github.com/vapoursynth/vs-removegrain  
 https://github.com/Irrational-Encoding-Wizardry/descale
 https://github.com/pinterf/AddGrainC
-
+```
 
 
