@@ -1059,16 +1059,16 @@ ADD https://raw.githubusercontent.com/Irrational-Encoding-Wizardry/kagefunc/mast
 ADD https://raw.githubusercontent.com/Irrational-Encoding-Wizardry/fvsfunc/master/fvsfunc.py /usr/local/share/vsscripts/fvsfunc.py
 ADD https://raw.githubusercontent.com/xyx98/my-vapoursynth-script/master/xvs.py /usr/local/share/vsscripts/xvs.py
 
-# FROM golang as bin
-# COPY . . 
-# # compile 
-# RUN go build -o -ldflags "-s -w" /tmp/ci-server .
+FROM golang as bin
+COPY . . 
+# compile 
+RUN go build -o -ldflags "-s -w" /tmp/ci-server .
 
-# FROM env
-# COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
-# COPY templates.yaml /opt/templates.yaml
-# COPY example /opt/example
-# ENV template_file /opt/templates.yaml
-# ENV db_file /opt/main.db
+FROM env
+COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
+COPY templates.yaml /opt/templates.yaml
+COPY example /opt/example
+ENV template_file /opt/templates.yaml
+ENV db_file /opt/main.db
 
-# ENTRYPOINT ["/usr/local/bin/ci-server"]
+ENTRYPOINT ["/usr/local/bin/ci-server"]
