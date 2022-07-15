@@ -1060,10 +1060,12 @@ ADD https://raw.githubusercontent.com/Irrational-Encoding-Wizardry/fvsfunc/maste
 ADD https://raw.githubusercontent.com/xyx98/my-vapoursynth-script/master/xvs.py /usr/local/share/vsscripts/xvs.py
 
 FROM golang as bin
-COPY . . 
-# compile 
-RUN go mod tidy && \
-    go build -o /tmp/ci-server -ldflags "-s -w" .
+WORKDIR /app
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+COPY . .
+RUN go build -o /tmp/ci-server 
 
 FROM env
 COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
