@@ -6,12 +6,13 @@
 
 # Templates
 
-模版就是多个任务的组合，可以理解成简单的workflow。关于流程其他信息见`templates.yaml`，这个文件位于镜像的`/opt/`中。
+模版就是多个任务的组合，可以理解成简单的workflow。模版定义在`templates.yaml`，这个文件也位于镜像的`/opt/`中。
+
 注意由于`scanner`的限制，部分带进度条的程序需要把进度条关掉才能正常运行。
 
 # Plugins
 
-vs和avs以及插件都安装在`/usr/local/{lib,share}`下，如有需要可以自行编译增删。
+vs和avs以及插件都安装在`/usr/local/{lib,share}/{vapoursynth,avisynth}`下，如有需要可以自行编译增删。
 
 默认编译了一部分常见的vs插件，具体如下
 
