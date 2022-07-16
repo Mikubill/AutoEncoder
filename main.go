@@ -41,8 +41,18 @@ func handleRequests(listenPort string) {
 	log.Fatal(http.ListenAndServe(listenPort, myRouter))
 }
 
+// Configured via -ldflags during build
+var GitCommit string
+
 func main() {
 	log.Infoln("Simple CI/CD server by CircleDevs @ JYFansub")
+	if len(os.Args) > 1 {
+		if os.Args[1] == "-v" || os.Args[1] == "--version" {
+			log.Infoln("Commit: " + GitCommit)
+			os.Exit(0)
+		}
+	}
+
 	listenPort := "127.0.0.1:33000"
 	if os.Getenv("ADDR") != "" {
 		listenPort = os.Getenv("ADDR")
