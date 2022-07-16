@@ -1,11 +1,29 @@
 #!/bin/sh
 set -xe
 
+# build freetype (fontconfig relies on it)
+cd /opt/dep 
+git clone --depth 1 https://github.com/freedesktop/fontconfig
+cd fontconfig
+meson build --buildtype=release --prefix /usr --bindir="/usr/bin" --libdir="/usr/lib"
+cd build 
+ninja 
+ninja install
+
+# build fontconfig
+if [ ! -d fontconfig ]; then
+    git clone --depth 1 https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+    cd fontconfig
+    ./autogen.sh --sysconfdir=/etc --prefix=/usr --mandir=/usr/share/man
+    make -j $(nproc) 
+    make install
+fi
+
 # build x264
 cd /opt/dep 
 git clone --depth 1 https://code.videolan.org/videolan/x264.git 
 cd x264 
-./configure --enable-pic --enable-static --prefix=/usr/local --bindir="/usr/local/bin" 
+./configure --cache-file=/tmp/configure.cache --enable-pic --enable-static --prefix=/usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib"
 make -j $(nproc) 
 make install
 
@@ -31,7 +49,7 @@ cd /opt/dep
 git clone --depth 1 https://github.com/mstorsjo/fdk-aac 
 cd fdk-aac 
 autoreconf -fiv 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -40,7 +58,7 @@ cd /opt/dep
 curl -LO http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz 
 tar xzf libogg-1.3.2.tar.gz 
 cd libogg-1.3.2 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -49,7 +67,7 @@ cd /opt/dep
 git clone --depth 1 https://github.com/xiph/opus.git 
 cd opus 
 ./autogen.sh 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install 
 
@@ -58,16 +76,16 @@ cd /opt/dep
 curl -LO http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.gz 
 tar xzf libvorbis-1.3.5.tar.gz 
 cd libvorbis-1.3.5 
-./configure --prefix=/usr/local --with-ogg --disable-oggtest --disable-examples 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --with-ogg --disable-oggtest --disable-examples 
 make -j $(nproc) 
 make install
 
 # build libtheora 
 cd /opt/dep 
-curl -LO http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2 
-tar xjf libtheora-1.1.1.tar.bz2 
-cd libtheora-1.1.1 
-./configure --prefix=/usr/local --with-ogg --disable-examples 
+git clone --depth 1 https://github.com/xiph/theora
+cd theora
+./autogen.sh
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --with-ogg --disable-examples 
 make -j $(nproc) 
 make install
 
@@ -76,36 +94,27 @@ cd /opt/dep
 curl -LO http://downloads.webmproject.org/releases/webp/libwebp-1.1.0.tar.gz 
 tar xzf libwebp-1.1.0.tar.gz 
 cd libwebp-1.1.0 
-./configure --prefix=/usr/local --disable-examples --disable-docs 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --disable-examples --disable-docs 
 make -j $(nproc) 
 make install
 
 # build libmp3lame
 cd /opt/dep 
-curl -LO http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz 
-tar xzf lame-3.99.5.tar.gz 
-cd lame-3.99.5 
-./configure --prefix=/usr/local --enable-nasm 
+curl -LO http://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz 
+tar xzf lame-3.100.tar.gz 
+cd lame-3.100
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --enable-nasm 
 make -j $(nproc) 
 make install
 
 # build fridibi 
 cd /opt/dep 
-git clone https://github.com/fribidi/fribidi 
+git clone --depth 1 https://github.com/fribidi/fribidi 
 cd fribidi 
-meson build --buildtype=release -Ddocs=false --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib" 
+meson build --buildtype=release -Ddocs=false --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib"
 cd build 
 ninja 
 ninja install
-
-# build freetype
-cd /opt/dep 
-curl -LO http://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.gz 
-tar zxf freetype-2.9.tar.gz 
-cd freetype-2.9 
-./configure --prefix=/usr/local 
-make -j $(nproc) 
-make install
 
 # graphite2
 cd /opt/dep 
@@ -123,7 +132,7 @@ cd /opt/dep
 curl -LO https://github.com/harfbuzz/harfbuzz/releases/download/4.4.1/harfbuzz-4.4.1.tar.xz 
 tar xJf harfbuzz-4.4.1.tar.xz 
 cd harfbuzz-4.4.1 
-meson build --buildtype=release -Dgraphite2=enabled --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib" 
+meson build --buildtype=release -Dgraphite2=enabled --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib"
 cd build 
 ninja 
 ninja install
@@ -133,7 +142,7 @@ cd /opt/dep
 git clone --depth 1 https://github.com/libass/libass 
 cd libass 
 ./autogen.sh 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -142,7 +151,7 @@ cd /opt/dep
 git clone --depth 1 https://github.com/ultravideo/kvazaar 
 cd kvazaar 
 ./autogen.sh 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -160,7 +169,7 @@ cd /opt/dep
 curl -LO https://versaweb.dl.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.5.tar.gz 
 tar xzf opencore-amr-0.1.5.tar.gz 
 cd opencore-amr-0.1.5 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -169,7 +178,7 @@ cd /opt/dep
 git clone --depth 1 https://gitlab.com/AOMediaCodec/SVT-AV1.git 
 mkdir -p SVT-AV1/build 
 cd SVT-AV1/build 
-cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_BUILD_TYPE=Release -DBUILD_DEC=OFF -DBUILD_SHARED_LIBS=OFF --libdir="/usr/local/lib"  ../../SVT-AV1 
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_BUILD_TYPE=Release -DBUILD_DEC=OFF -DBUILD_SHARED_LIBS=OFF  ../../SVT-AV1 
 make -j $(nproc) 
 make install
 
@@ -177,17 +186,17 @@ make install
 cd /opt/dep 
 git clone --depth 1 https://github.com/Netflix/vmaf 
 cd vmaf/libvmaf 
-meson build -Denable_tests=false -Denable_docs=false --buildtype=release --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib" 
+meson build -Denable_tests=false -Denable_docs=false --buildtype=release --prefix /usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib"
 cd build 
 ninja 
 ninja install
 
 # build libsndfile
 cd /opt/dep 
-git clone https://github.com/libsndfile/libsndfile.git 
+git clone --depth 1 https://github.com/libsndfile/libsndfile.git 
 cd libsndfile 
 ./autogen.sh 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
@@ -196,13 +205,13 @@ cd /opt/dep
 curl -LO http://downloads.xvid.org/downloads/xvidcore-1.3.4.tar.gz 
 tar xzf xvidcore-1.3.4.tar.gz 
 cd xvidcore/build/generic 
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j $(nproc) 
 make install
 
 # build openjpeg
 cd /opt/dep 
-git clone https://github.com/uclouvain/openjpeg.git 
+git clone --depth 1 https://github.com/uclouvain/openjpeg.git 
 cd openjpeg 
 mkdir build 
 cd build 
@@ -212,7 +221,7 @@ make install
 
 # build libvstab
 cd /opt/dep 
-git clone https://github.com/georgmartius/vid.stab 
+git clone --depth 1 https://github.com/georgmartius/vid.stab 
 cd vid.stab 
 mkdir build 
 cd build 
@@ -223,7 +232,7 @@ make install
 # build libxml2
 cd /opt/dep 
 curl -LO https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz 
-tar xJf libxml2-2.9.14.tar.xz   
+tar xJvf libxml2-2.9.14.tar.xz   
 cd libxml2-2.9.14 
 ./autogen.sh --prefix=/usr/local --with-ftp=no --with-http=no --with-python=no 
 make -j $(nproc) 
@@ -232,26 +241,26 @@ make install
 # build libbluray
 cd /opt/dep 
 curl -LO http://download.videolan.org/pub/videolan/libbluray/1.1.2/libbluray-1.1.2.tar.bz2 
-tar xjf libbluray-1.1.2.tar.bz2 
+tar xjvf libbluray-1.1.2.tar.bz2 
 cd libbluray-1.1.2 
-./configure --prefix=/usr/local --disable-examples --disable-bdjava-jar 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --disable-examples --disable-bdjava-jar 
 make -j $(nproc) 
 make install
 
 # build libaribb24
 cd /opt/dep 
-git clone https://github.com/nkoriyama/aribb24 
+git clone --depth 1 https://github.com/nkoriyama/aribb24 
 cd aribb24 
 autoreconf -fiv 
-./configure --prefix=/usr/local --disable-examples 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --disable-examples 
 make -j $(nproc) 
 make install
 
 # build  libsdl2-dev 
 cd /opt/dep 
-git clone https://github.com/libsdl-org/SDL 
+git clone --depth 1 https://github.com/libsdl-org/SDL 
 cd SDL 
-./configure --prefix=/usr/local --disable-examples --disable-sdl-image --disable-sdl-ttf --disable-sdl-mixer --disable-sdl-net 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --disable-examples --disable-sdl-image --disable-sdl-ttf --disable-sdl-mixer --disable-sdl-net 
 make -j $(nproc) 
 make install
 
@@ -262,26 +271,18 @@ cd zimg
 # 2022.06.24 per MABS, commits after ths one break, cpuinfo broken
 git checkout c9a15ec4f86adfef6c7cede8dae79762d34f2564 
 ./autogen.sh &&\
-./configure --prefix=/usr/local 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc) 
 make install 
 
-# Vapoursynth
-cd /opt/vs 
-git clone https://github.com/vapoursynth/vapoursynth.git 
-cd vapoursynth 
-./autogen.sh &&\
-./configure --prefix=/usr/local 
-# arm only. otherwise it fails to build.
-make -j$(nproc) 
-make install 
-
-# expr: avisynth
-cd /opt/avs 
-git clone --depth 1 https://github.com/AviSynth/AviSynthPlus.git 
-cd AviSynthPlus 
-mkdir build 
-cd build 
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. -G Ninja 
-ninja 
-ninja install
+# libdevil
+cd /opt/dep
+wget http://downloads.sourceforge.net/openil/DevIL-1.8.0.tar.gz
+tar xvzf DevIL-1.8.0.tar.gz
+cd DevIL/DevIL/
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_BUILD_TYPE=Release ../
+make -j $(nproc)
+make install
+wait

@@ -1,9 +1,9 @@
-FROM python:latest as env
+FROM python:bullseye as env
 
 ENV WORKDIR='/opt'
-ENV LD_LIBRARY_PATH='/usr/local/lib'
-ENV LIBRARY_PATH='/usr/local/lib'
-ENV PKG_CONFIG_PATH='/usr/local/lib/pkgconfig'
+ENV LD_LIBRARY_PATH='/usr/local/lib:/usr/lib'
+ENV LIBRARY_PATH='/usr/local/lib:/usr/lib'
+ENV PKG_CONFIG_PATH='/usr/local/lib/pkgconfig:/usr/lib/pkgconfig'
 ENV PYTHONPATH='/usr/local/lib/python3.10/site-packages'
 ENV CXXFLAGS="$CXXFLAGS -fPIC"
 ENV CFLAGS="$CFLAGS -fPIC"
@@ -12,16 +12,19 @@ WORKDIR ${WORKDIR}
 
 # Development dependencies
 RUN apt update && \
-    apt upgrade -y && \
-    apt install -y dpkg apt-utils && \
-    #
-    apt install -y build-essential autoconf autogen automake autotools-dev libtool pkg-config curl git xz-utils && \
-    apt install -y yasm nasm cmake xxd &&\
-    # ffmpeg dependencies
-    apt install -y libgnutls28-dev libva-dev libunistring-dev fontconfig libnuma-dev libdevil-dev && \
-    apt install -y libxcb-shm0-dev libxcb-xfixes0-dev libvdpau-dev libvorbis-dev libxcb1-dev libdav1d-dev &&\
-    # eedi2&eedi3 depend on opencl and boost
-    apt install -y ocl-icd-opencl-dev libboost-all-dev && \
+    apt -y upgrade && \
+    apt -y install\
+        dpkg apt-utils unzip tar p7zip \
+        # Development dependencies
+        build-essential autoconf autogen automake autotools-dev curl gperf clang \
+        yasm nasm cmake xxd libtool pkg-config git xz-utils wget gettext autopoint \
+        # ffmpeg dependencies
+        libgnutls28-dev libva-dev libunistring-dev libnuma-dev libdav1d-dev \
+        libxcb-shm0-dev libxcb-xfixes0-dev libvdpau-dev libxcb1-dev libxext-dev \
+        # eedi2&eedi3 depend on opencl and boost
+        ocl-icd-opencl-dev opencl-c-headers opencl-clhpp-headers \
+        libboost-filesystem-dev libboost-system-dev libboost-thread-dev && \
+    apt clean && \
     # python build tools
     pip install --upgrade wheel meson cpython cython pip ninja && \
     mkdir -p /opt/dep /opt/vs /opt/avs 
@@ -29,6 +32,25 @@ RUN apt update && \
 # install deps
 COPY build /opt/build
 RUN bash /opt/build/deps.sh
+
+# install vapoursynth and avisynth
+RUN cd /opt/vs && \
+    git clone --depth 1 https://github.com/vapoursynth/vapoursynth.git  && \
+    cd vapoursynth && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr/local --disable-shared && \
+    make -j1 V=1 && \
+    make install && \
+
+    # expr: avisynth
+    cd /opt/avs && \
+    git clone --depth 1 https://github.com/AviSynth/AviSynthPlus.git && \
+    cd AviSynthPlus && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. -G Ninja && \
+    ninja && \
+    ninja install 
 
 # install ffmpeg
 RUN cd /opt/dep && \
@@ -103,7 +125,7 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -o /tmp/ci-server -ldflags "-w -s -X main.GitCommit="$(git rev-parse HEAD)
+RUN CGO_ENABLED=0 go build -v -o /tmp/ci-server -ldflags "-w -s -X main.GitCommit="$(git rev-parse HEAD)
 
 FROM env
 COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
@@ -112,7 +134,7 @@ COPY example /opt/example
 ENV template_file /opt/templates.yaml
 ENV db_file /opt/main.db
 ENV addr :8080
-RUN rm /opt/build && \
+RUN rm -rf /opt/build && \
     vspipe -v && ci-server -v
 
 ENTRYPOINT ["ci-server"]
