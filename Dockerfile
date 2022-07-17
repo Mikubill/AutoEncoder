@@ -14,7 +14,7 @@ WORKDIR ${WORKDIR}
 RUN apt update && \
     apt -y upgrade && \
     apt -y install\
-        dpkg apt-utils unzip tar p7zip \
+        dpkg apt-utils unzip tar p7zip libc6-dev \
         # Development dependencies
         build-essential autoconf autogen automake autotools-dev curl gperf clang \
         yasm nasm cmake xxd libtool pkg-config git xz-utils wget gettext autopoint \
@@ -34,84 +34,21 @@ COPY build/deps.sh /opt/build/deps.sh
 RUN bash /opt/build/deps.sh
 
 # install vapoursynth and avisynth
-RUN cd /opt/vs && \
-    git clone --depth 1 https://github.com/vapoursynth/vapoursynth.git  && \
-    cd vapoursynth && \
-    ./autogen.sh && \
-    ./configure --prefix=/usr/local && \
-    make -j1 V=1 && \
-    make install && \
-
-    # expr: avisynth
-    cd /opt/avs && \
-    git clone --depth 1 https://github.com/AviSynth/AviSynthPlus.git && \
-    cd AviSynthPlus && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. -G Ninja && \
-    ninja && \
-    ninja install 
+COPY build/vscore.sh /opt/build/vscore.sh
+RUN bash /opt/build/vscore.sh
 
 # install ffmpeg
-RUN cd /opt/dep && \
-    ldconfig && \
-    wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
-    tar -xjf ffmpeg-snapshot.tar.bz2 && \
-    cd ffmpeg && \
-    ./configure --prefix=/usr/local \
-        --disable-debug \
-        --disable-doc \
-        --disable-ffplay \
-        --enable-version3 \
-        --enable-shared \
-        --enable-gpl \
-        --enable-libass \
-        --enable-fontconfig \
-        --enable-libfreetype \
-        --enable-libvidstab \
-        --enable-libxcb \
-        --enable-nonfree \
-        --enable-libbluray \
-        --enable-libfdk-aac \
-        --enable-libmp3lame \
-        --enable-libopus \
-        --enable-libtheora \
-        --enable-libvorbis \
-        --enable-libvpx \
-        --enable-libx264 \
-        --enable-libx265 \
-        --enable-libaom \
-        --enable-libwebp \
-        --enable-libsvtav1 \
-        --enable-libopencore-amrnb \
-        --enable-libopencore-amrwb \
-        --enable-libvmaf && \
-    make -j $(nproc) && \
-    make install 
+COPY build/ffcore.sh /opt/build/ffcore.sh
+RUN bash /opt/build/ffcore.sh
 
-# OpenCV
+# install OpenCV
 ENV OPENCV_VERSION=4.6.0
-RUN cd /opt/dep && \
-    wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-    unzip ${OPENCV_VERSION}.zip && \
-    rm -rf ${OPENCV_VERSION}.zip && \
-    mkdir -p /opt/dep/opencv-${OPENCV_VERSION}/build && \
-    cd /opt/dep/opencv-${OPENCV_VERSION}/build && \
-    cmake \
-        -D CMAKE_BUILD_TYPE=RELEASE \
-        -D CMAKE_INSTALL_PREFIX=/usr/local \
-        -D BUILD_EXAMPLES=NO \
-        -D WITH_FFMPEG=NO \
-        -D WITH_IPP=NO \
-        -D WITH_OPENEXR=NO \
-        -D WITH_TBB=NO \
-        -D BUILD_ANDROID_EXAMPLES=NO \
-        -D INSTALL_PYTHON_EXAMPLES=NO \
-        -D BUILD_DOCS=NO \
-    .. && \
-    make -j $(nproc) && \
-    make install 
+COPY build/cvcore.sh /opt/build/cvcore.sh
+RUN bash /opt/build/cvcore.sh
 
+# recompile some modules
+COPY build/deps2.sh /opt/build/deps2.sh
+RUN bash /opt/build/deps2.sh
 
 # install vs plugins 
 COPY build/plugins.sh /opt/build/plugins.sh
@@ -130,9 +67,18 @@ COPY . .
 RUN CGO_ENABLED=0 go build -v -o /tmp/ci-server -ldflags "-w -s -X main.GitCommit="$(git rev-parse HEAD)
 
 FROM env
+
+# install fonts
+RUN apt install -y unrar-free && \
+    wget -O /tmp/fonts.rar https://github.com/Mikubill/AutoEncoder/releases/download/v0.1-assets/fonts.rar && \
+    unrar x -y /tmp/fonts.rar /usr/share/fonts/vcb-fonts-silm && \
+    rm -rf /tmp/fonts.rar && \
+    fc-cache -fv
+
 COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
 COPY templates.yaml /opt/templates.yaml
 COPY example /opt/example
+
 ENV template_file /opt/templates.yaml
 ENV db_file /opt/main.db
 ENV ADDR :8080

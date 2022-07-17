@@ -2,7 +2,7 @@ encode-x264-vsbase:
   name: encode-x264-vsbase
   description: 字幕压制模版，使用vspipe解析，x264和ffmpeg压制。
   inputs:
-    vsfile: file|/opt/example/input-b3.vpy
+    vsfile: file|/opt/example/input-b4.vpy
     videofile: file|/opt/example/example.mkv
     assfile: file|/opt/example/subtitle.ass
   envs: 
@@ -27,7 +27,7 @@ encode-x265-vsbase:
   name: encode-x265-vsbase
   description: 字幕压制模版，使用vspipe解析，x265和ffmpeg压制。
   inputs:
-    vsfile: file|/opt/example/input-b3.vpy
+    vsfile: file|/opt/example/input-b4.vpy
     videofile: file|/opt/example/example.mkv
     assfile: file|/opt/example/subtitle.ass
   envs: 
