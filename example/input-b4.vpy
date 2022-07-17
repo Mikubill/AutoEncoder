@@ -8,8 +8,12 @@ import havsfunc as haf
 import nnedi3_resample as nnrs
 from vapoursynth import core
 
-source = r"input.mkv" 
-source = core.lsmas.LWLibavSource(source,threads=0)
+core.std.LoadPlugin("/usr/local/lib/libf3kdb.so")
+core.std.LoadPlugin("/usr/local/lib/x86_64-linux-gnu/libmvtools.so")
+core.std.LoadPlugin("/usr/local/lib/libfmtconv.so")
+# core.std.LoadPlugin("/usr/local/lib/x86_64-linux-gnu/vapoursynth/libknlmeanscl.so")
+
+source = core.lsmas.LWLibavSource("input.mkv")
 src8  = core.std.AssumeFPS(source, fpsnum=24000, fpsden=1001)
 src16 = mvf.Depth(src8, depth=16)
 

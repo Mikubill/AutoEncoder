@@ -126,7 +126,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DCTFilter
 cd VapourSynth-DCTFilter
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -135,7 +135,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Deblock 
 cd VapourSynth-Deblock
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -144,7 +144,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DeblockPP7
 cd VapourSynth-DeblockPP7
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -170,7 +170,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D
 cd VapourSynth-BM3D
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -179,7 +179,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS
 cd VapourSynth-CAS
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -188,7 +188,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CTMF
 cd VapourSynth-CTMF
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -197,7 +197,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DFTTest
 cd VapourSynth-DFTTest
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -206,7 +206,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2
 cd VapourSynth-EEDI2
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -215,7 +215,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3
 cd VapourSynth-EEDI3
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -233,7 +233,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/myrsloik/VapourSynth-FFT3DFilter
 cd VapourSynth-FFT3DFilter
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -251,7 +251,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-fillborders
 cd vapoursynth-fillborders
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -332,7 +332,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/Khanattila/KNLMeansCL
 cd KNLMeansCL
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -350,7 +350,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-mvtools
 cd vapoursynth-mvtools
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -368,7 +368,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-NNEDI3CL
 cd VapourSynth-NNEDI3CL
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -385,7 +385,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-ReadMpls
 cd VapourSynth-ReadMpls
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -402,7 +402,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Retinex
 cd VapourSynth-Retinex
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -490,7 +490,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TTempSmooth
 cd VapourSynth-TTempSmooth
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
@@ -547,7 +547,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Waifu2x-w2xc
 cd VapourSynth-Waifu2x-w2xc
-meson build --prefix=/usr/locall
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
