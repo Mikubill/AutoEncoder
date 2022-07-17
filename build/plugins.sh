@@ -56,7 +56,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-bifrost
 cd vapoursynth-bifrost
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local  
 make -j$(nproc)
 make install 
 
@@ -81,7 +81,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-cnr2
 cd vapoursynth-cnr2
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local  
 make -j$(nproc)
 make install 
 
@@ -118,7 +118,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-damb
 cd vapoursynth-damb
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -126,7 +126,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DCTFilter
 cd VapourSynth-DCTFilter
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -135,7 +135,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Deblock 
 cd VapourSynth-Deblock
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -144,7 +144,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DeblockPP7
 cd VapourSynth-DeblockPP7
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -154,7 +154,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-degrainmedian
 cd vapoursynth-degrainmedian
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -170,7 +170,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D
 cd VapourSynth-BM3D
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -179,7 +179,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS
 cd VapourSynth-CAS
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -188,7 +188,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CTMF
 cd VapourSynth-CTMF
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -197,7 +197,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DFTTest
 cd VapourSynth-DFTTest
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -206,7 +206,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2
 cd VapourSynth-EEDI2
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -215,7 +215,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3
 cd VapourSynth-EEDI3
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -225,7 +225,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/FFMS/ffms2
 cd ffms2
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -233,7 +233,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/myrsloik/VapourSynth-FFT3DFilter
 cd VapourSynth-FFT3DFilter
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -243,7 +243,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-fieldhint
 cd vapoursynth-fieldhint
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -251,7 +251,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-fillborders
 cd vapoursynth-fillborders
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -260,7 +260,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/SAPikachu/flash3kyuu_deband
 cd flash3kyuu_deband
-./waf configure --prefix=/usr/local --libdir=/usr/local/lib/ --install=/usr/local/lib/vapoursynth 
+./waf configure --prefix=/usr/local --libdir=/usr/local/lib/ 
 ./waf build
 ./waf install
 
@@ -269,7 +269,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-fluxsmooth
 cd vapoursynth-fluxsmooth
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local
 make -j$(nproc)
 make install
 
@@ -279,7 +279,7 @@ git clone --depth 1 https://github.com/EleonoreMizo/fmtconv
 cd fmtconv
 cd ./build/unix
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local
 make -j$(nproc)
 make install
 
@@ -298,7 +298,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-histogram
 cd vapoursynth-histogram
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -307,7 +307,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/Hinterwaeldlers/vapoursynth-hqdn3d
 cd vapoursynth-hqdn3d
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -332,7 +332,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/Khanattila/KNLMeansCL
 cd KNLMeansCL
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -342,7 +342,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-msmoosh
 cd vapoursynth-msmoosh
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local  
 make -j$(nproc)
 make install
 
@@ -350,7 +350,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-mvtools
 cd vapoursynth-mvtools
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -360,7 +360,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-nnedi3
 cd vapoursynth-nnedi3
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -368,7 +368,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-NNEDI3CL
 cd VapourSynth-NNEDI3CL
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -385,7 +385,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-ReadMpls
 cd VapourSynth-ReadMpls
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -402,7 +402,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Retinex
 cd VapourSynth-Retinex
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -424,7 +424,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-scrawl
 cd vapoursynth-scrawl
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local
 make -j$(nproc)
 make install
 
@@ -433,7 +433,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-scxvid
 cd vapoursynth-scxvid
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -442,7 +442,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-ssiq
 cd vapoursynth-ssiq
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -465,7 +465,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TDeintMod
 cd VapourSynth-TDeintMod
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -474,7 +474,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-temporalsoften
 cd vapoursynth-temporalsoften
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install
 
@@ -490,7 +490,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TTempSmooth
 cd VapourSynth-TTempSmooth
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
@@ -509,7 +509,7 @@ cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-videoscope
 cd vapoursynth-videoscope
 ./autogen.sh
-./configure --cache-file=/tmp/configure.cache --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --cache-file=/tmp/configure.cache --prefix=/usr/local
 make -j$(nproc)
 make install
 
@@ -547,7 +547,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Waifu2x-w2xc
 cd VapourSynth-Waifu2x-w2xc
-meson build --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/locall
 cd build
 ninja
 ninja install
