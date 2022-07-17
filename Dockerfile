@@ -14,7 +14,7 @@ WORKDIR ${WORKDIR}
 RUN apt update && \
     apt -y upgrade && \
     apt -y install\
-        dpkg apt-utils unzip tar p7zip libc6-dev \
+        dpkg apt-utils unzip tar p7zip \
         # Development dependencies
         build-essential autoconf autogen automake autotools-dev curl gperf clang \
         yasm nasm cmake xxd libtool pkg-config git xz-utils wget gettext autopoint \
@@ -22,7 +22,7 @@ RUN apt update && \
         libgnutls28-dev libva-dev libunistring-dev libnuma-dev libdav1d-dev \
         libxcb-shm0-dev libxcb-xfixes0-dev libvdpau-dev libxcb1-dev libxext-dev \
         # eedi2&eedi3 depend on opencl and boost
-        ocl-icd-opencl-dev opencl-c-headers opencl-clhpp-headers \
+        ocl-icd-opencl-dev opencl-c-headers opencl-clhpp-headers libc6-dev \
         libboost-filesystem-dev libboost-system-dev libboost-thread-dev && \
     apt clean && \
     # python build tools
