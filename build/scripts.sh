@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-pip install vsutil
+pip install --no-deps vsutil
 mkdir -p /usr/local/share/vsscripts
 curl -fsSL https://raw.githubusercontent.com/dubhater/vapoursynth-adjust/master/adjust.py -o /usr/local/share/vsscripts/adjust.py
 curl -fsSL https://raw.githubusercontent.com/HomeOfVapourSynthEvolution/havsfunc/master/havsfunc.py -o /usr/local/share/vsscripts/havsfunc.py

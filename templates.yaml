@@ -4,7 +4,7 @@ encode-x264-vsbase:
   inputs:
     vsfile: file|/opt/example/input-b3.vpy
     videofile: file|/opt/example/example.mkv
-    assfile: file|/opt/example/subtitle.mkv
+    assfile: file|/opt/example/subtitle.ass
   envs: 
   steps: 
     - name: 音频提取
@@ -29,7 +29,7 @@ encode-x265-vsbase:
   inputs:
     vsfile: file|/opt/example/input-b3.vpy
     videofile: file|/opt/example/example.mkv
-    assfile: file|/opt/example/subtitle.mkv
+    assfile: file|/opt/example/subtitle.ass
   envs: 
   steps: 
     - name: 音频提取

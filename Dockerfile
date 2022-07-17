@@ -1,9 +1,9 @@
 FROM python:bullseye as env
 
 ENV WORKDIR='/opt'
-ENV LD_LIBRARY_PATH='/usr/local/lib:/usr/lib'
-ENV LIBRARY_PATH='/usr/local/lib:/usr/lib'
-ENV PKG_CONFIG_PATH='/usr/local/lib/pkgconfig:/usr/lib/pkgconfig'
+ENV LD_LIBRARY_PATH='/usr/local/lib'
+ENV LIBRARY_PATH='/usr/local/lib'
+ENV PKG_CONFIG_PATH='/usr/local/lib/pkgconfig'
 ENV PYTHONPATH='/usr/local/lib/python3.10/site-packages'
 ENV CXXFLAGS="$CXXFLAGS -fPIC"
 ENV CFLAGS="$CFLAGS -fPIC"
@@ -30,7 +30,7 @@ RUN apt update && \
     mkdir -p /opt/dep /opt/vs /opt/avs 
 
 # install deps
-COPY build /opt/build
+COPY build/deps.sh /opt/build/deps.sh
 RUN bash /opt/build/deps.sh
 
 # install vapoursynth and avisynth
@@ -38,7 +38,7 @@ RUN cd /opt/vs && \
     git clone --depth 1 https://github.com/vapoursynth/vapoursynth.git  && \
     cd vapoursynth && \
     ./autogen.sh && \
-    ./configure --prefix=/usr/local --disable-shared && \
+    ./configure --prefix=/usr/local && \
     make -j1 V=1 && \
     make install && \
 
@@ -114,9 +114,11 @@ RUN cd /opt/dep && \
 
 
 # install vs plugins 
+COPY build/plugins.sh /opt/build/plugins.sh
 RUN bash /opt/build/plugins.sh
 
 # install vapoursynth-scripts\
+COPY build/scripts.sh /opt/build/scripts.sh
 RUN bash /opt/build/scripts.sh
 
 FROM golang as bin
@@ -133,8 +135,9 @@ COPY templates.yaml /opt/templates.yaml
 COPY example /opt/example
 ENV template_file /opt/templates.yaml
 ENV db_file /opt/main.db
-ENV addr :8080
+ENV ADDR :8080
 RUN rm -rf /opt/build && \
+    python -m site && \
     vspipe -v && ci-server -v
 
 ENTRYPOINT ["ci-server"]

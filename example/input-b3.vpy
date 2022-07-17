@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/usr/local/share/vsscripts')
+
 import vapoursynth as vs
 import mvsfunc as mvf
 
