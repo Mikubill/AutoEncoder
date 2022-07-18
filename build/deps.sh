@@ -23,9 +23,9 @@ fi
 cd /opt/dep 
 git clone --depth 1 https://code.videolan.org/videolan/x264.git 
 cd x264 
-./configure --cache-file=/tmp/configure.cache --enable-pic --enable-static --prefix=/usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib"
-make -j $(nproc) 
-make install
+./configure --cache-file=/tmp/configure.cache --enable-pic --enable-static --prefix=/usr/local --bindir="/usr/local/bin" --libdir="/usr/local/lib" && \
+make -j $(nproc) && \
+make install 
 
 # build x265
 cd /opt/dep 

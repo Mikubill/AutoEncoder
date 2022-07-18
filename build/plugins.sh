@@ -18,6 +18,8 @@ meson build --prefix=/usr/local
 cd build
 ninja
 ninja install
+
+# bulid avs-plugin: l-smash-works
 cd /opt/vs/L-SMASH-Works/AviSynth
 meson build --prefix=/usr/local
 cd build
@@ -455,7 +457,7 @@ make install
 cd /opt/vs
 git clone --depth 1 https://github.com/dubhater/vapoursynth-tcomb
 cd vapoursynth-tcomb
-meson build --prefix=/usr/local--install=/usr/local/lib/vapoursynth 
+meson build --prefix=/usr/local
 cd build
 ninja
 ninja install

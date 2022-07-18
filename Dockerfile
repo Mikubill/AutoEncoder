@@ -14,7 +14,7 @@ WORKDIR ${WORKDIR}
 RUN apt update && \
     apt -y upgrade && \
     apt -y install\
-        dpkg apt-utils unzip tar p7zip \
+        dpkg apt-utils unzip tar p7zip unrar-free \
         # Development dependencies
         build-essential autoconf autogen automake autotools-dev curl gperf clang \
         yasm nasm cmake xxd libtool pkg-config git xz-utils wget gettext autopoint \
@@ -42,9 +42,9 @@ COPY build/ffcore.sh /opt/build/ffcore.sh
 RUN bash /opt/build/ffcore.sh
 
 # install OpenCV
-ENV OPENCV_VERSION=4.6.0
-COPY build/cvcore.sh /opt/build/cvcore.sh
-RUN bash /opt/build/cvcore.sh
+# ENV OPENCV_VERSION=4.6.0
+# COPY build/cvcore.sh /opt/build/cvcore.sh
+# RUN bash /opt/build/cvcore.sh
 
 # recompile some modules
 COPY build/deps2.sh /opt/build/deps2.sh
@@ -69,8 +69,7 @@ RUN CGO_ENABLED=0 go build -v -o /tmp/ci-server -ldflags "-w -s -X main.GitCommi
 FROM env
 
 # install fonts
-RUN apt install -y unrar-free && \
-    wget -O /tmp/fonts.rar https://github.com/Mikubill/AutoEncoder/releases/download/v0.1-assets/fonts.rar && \
+RUN wget -O /tmp/fonts.rar https://github.com/Mikubill/AutoEncoder/releases/download/v0.1-assets/fonts.rar && \
     unrar x -y /tmp/fonts.rar /usr/share/fonts/vcb-fonts-silm && \
     rm -rf /tmp/fonts.rar && \
     fc-cache -fv
