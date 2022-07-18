@@ -36,5 +36,5 @@ debd  = core.f3kdb.Deband(debd,20,56,32,32,0,0,output_depth=16)
 debd  = mvf.LimitFilter(debd,flt,thr=0.6,thrc=0.5,elast=2.0)
 debd  = core.std.MaskedMerge(debd,flt,nrmask,first_plane=True)
 
-opt = core.assvapour.AssRender(dbed,"subtitle.ass")
+opt = core.sub.TextFile(src, "subtitle.ass")
 mvf.Depth(opt,10).set_output() 
