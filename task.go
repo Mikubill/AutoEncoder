@@ -10,6 +10,7 @@ import (
 	"path"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -47,7 +48,15 @@ var activeTasks = make(map[int]*Task)
 type CancelFunc func()
 
 func newCancelFunction(cmd *exec.Cmd) CancelFunc {
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setpgid:   true,
+		Pdeathsig: syscall.SIGKILL,
+	}
 	return func() {
+		pgid, err := syscall.Getpgid(cmd.Process.Pid)
+		if err == nil {
+			syscall.Kill(-pgid, 15) // note the minus sign
+		}
 		cmd.Process.Signal(os.Interrupt)
 		time.Sleep(1 * time.Second)
 		cmd.Process.Kill()

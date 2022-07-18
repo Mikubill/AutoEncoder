@@ -68,11 +68,12 @@ RUN CGO_ENABLED=0 go build -v -o /tmp/ci-server -ldflags "-w -s -X main.GitCommi
 
 FROM env
 
-# install fonts
-RUN wget -O /tmp/fonts.rar https://github.com/Mikubill/AutoEncoder/releases/download/v0.1-assets/fonts.rar && \
-    unrar x -y /tmp/fonts.rar /usr/share/fonts/vcb-fonts-silm && \
-    rm -rf /tmp/fonts.rar && \
-    fc-cache -fv
+# # install fonts
+# RUN wget -O /tmp/fonts.rar https://github.com/Mikubill/AutoEncoder/releases/download/v0.1-assets/fonts.rar && \
+#     mkdir /usr/share/fonts/vcb-fonts-silm && \
+#     unrar x -y /tmp/fonts.rar /usr/share/fonts/vcb-fonts-silm && \
+#     rm -rf /tmp/fonts.rar && \
+#     fc-cache -fv
 
 COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
 COPY templates.yaml /opt/templates.yaml
