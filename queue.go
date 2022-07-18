@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -43,7 +44,7 @@ func runTask(task *Task) {
 	task.Status = "queued"
 	saveTask(task)
 
-	pool.Acquire(task.context, 1)
+	pool.Acquire(context.Background(), 1)
 	defer pool.Release(1)
 
 	task.Status = "running"
@@ -98,10 +99,11 @@ func runTask(task *Task) {
 				}
 			}
 		}
-		cmd := exec.CommandContext(task.context, c[0], c[1:]...)
+		cmd := exec.CommandContext(context.Background(), c[0], c[1:]...)
 		if cmdlines.Bash {
-			cmd = exec.CommandContext(task.context, "bash", "-c", strings.Join(c, " "))
+			cmd = exec.CommandContext(context.Background(), "bash", "-c", strings.Join(c, " "))
 		}
+		task.cancelFunc = append(task.cancelFunc, newCancelFunction(cmd))
 		streamer.Write("Running command: " + cmd.String() + "\n")
 
 		cmd.Env = os.Environ()

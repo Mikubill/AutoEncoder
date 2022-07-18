@@ -1,12 +1,12 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 	"sync"
@@ -38,12 +38,21 @@ type Task struct {
 	Req       TaskReq   `json:"config"`
 	StartTime time.Time `json:"starttime"`
 
-	context    context.Context
-	cancelFunc context.CancelFunc
+	cancelFunc []CancelFunc
 	runLock    sync.Mutex
 }
 
 var activeTasks = make(map[int]*Task)
+
+type CancelFunc func()
+
+func newCancelFunction(cmd *exec.Cmd) CancelFunc {
+	return func() {
+		cmd.Process.Signal(os.Interrupt)
+		time.Sleep(1 * time.Second)
+		cmd.Process.Kill()
+	}
+}
 
 func getTasksList(w http.ResponseWriter, page int) {
 	// fetch data from db
@@ -165,7 +174,9 @@ func deleteTask(w http.ResponseWriter, id int) {
 		return
 	}
 	if task.cancelFunc != nil {
-		task.cancelFunc()
+		for _, cancelFunc := range task.cancelFunc {
+			cancelFunc()
+		}
 	}
 	wksDir := path.Join(config.WksPath, fmt.Sprintf("task-%d", task.ID))
 	os.RemoveAll(wksDir)
@@ -187,7 +198,9 @@ func stopTask(w http.ResponseWriter, id int) {
 	task.runLock.Lock()
 	defer task.runLock.Unlock()
 	if task.cancelFunc != nil {
-		task.cancelFunc()
+		for _, cancelFunc := range task.cancelFunc {
+			cancelFunc()
+		}
 	}
 	time.Sleep(500 * time.Millisecond)
 	task.Status = "stopped"
@@ -248,7 +261,6 @@ func startTask(w http.ResponseWriter, id int) {
 	if task.Status == "created" {
 		task.Status = "running"
 		saveTask(task)
-		task.context, task.cancelFunc = context.WithCancel(context.Background())
 		go runTask(task)
 	}
 }
@@ -264,7 +276,6 @@ func restartTasks() {
 		if task.Status == "running" || task.Status == "queued" {
 			task.runLock.Lock()
 			defer task.runLock.Unlock()
-			task.context, task.cancelFunc = context.WithCancel(context.Background())
 			go runTask(task)
 		}
 	}
