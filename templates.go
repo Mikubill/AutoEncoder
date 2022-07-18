@@ -32,7 +32,7 @@ var (
 
 func init() {
 	// read templates from file
-	yfile, err := ioutil.ReadFile(os.Getenv("template_file"))
+	yfile, err := ioutil.ReadFile(os.Getenv("TPL_FILE"))
 	if err != nil {
 		log.Fatal(err)
 	}

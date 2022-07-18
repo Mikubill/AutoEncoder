@@ -396,7 +396,7 @@ ninja install
 cd /opt/vs
 git clone --depth 1 https://github.com/VFR-maniac/VapourSynth-ReduceFlicker
 cd VapourSynth-ReduceFlicker
-./configure --prefix=/usr/local --install=/usr/local/lib/vapoursynth 
+./configure --prefix=/usr/local 
 make -j$(nproc)
 make install
 

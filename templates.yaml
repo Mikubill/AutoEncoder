@@ -18,7 +18,7 @@ encode-x264-vsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac
+      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
 
 encode-x265-vsbase:
   name: encode-x265-vsbase
@@ -40,8 +40,8 @@ encode-x265-vsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac
-
+      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
+      
 ffmpeg-info:
   name: ffmpeg-info
   description: 获取媒体信息摘要

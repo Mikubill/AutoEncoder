@@ -11,7 +11,7 @@ import (
 
 var (
 	db     *bolt.DB
-	dbPath = os.Getenv("db_file")
+	dbPath = os.Getenv("DB_FILE")
 )
 
 func init() {
@@ -52,8 +52,8 @@ func SaveConfig() {
 func LoadConfig() {
 	baseConfig := &baseConf{
 		PoolSize: 5,
-		WksPath:  "/tmp",
-		UpPath:   "/tmp",
+		WksPath:  "/opt/workspace",
+		UpPath:   "/opt/tmp",
 	}
 
 	db.View(func(tx *bolt.Tx) error {

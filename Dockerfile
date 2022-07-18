@@ -78,10 +78,12 @@ COPY --from=bin /tmp/ci-server /usr/local/bin/ci-server
 COPY templates.yaml /opt/templates.yaml
 COPY example /opt/example
 
-ENV template_file /opt/templates.yaml
-ENV db_file /opt/main.db
-ENV ADDR :8080
+ENV TPL_FILE /opt/templates.yaml
+ENV DB_FILE /opt/main.db
+ENV LISTEN_ADDR :8080
 RUN rm -rf /opt/build && \
+    mkdir /opt/workspace && \
+    mkdir /opt/tmp && \
     python -m site && \
     vspipe -v && ci-server -v
 

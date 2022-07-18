@@ -8,6 +8,7 @@ import (
 
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
+	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/mem"
 	// "github.com/shirou/gopsutil/mem"  // to use v2
 )
@@ -16,7 +17,7 @@ func getMem() string {
 	v, _ := mem.VirtualMemory()
 
 	// almost every return value is a struct
-	return fmt.Sprintf("Total %v, Available %v, Used %2.f%%", bci(v.Total), bci(v.Available), v.UsedPercent)
+	return fmt.Sprintf("ram %2.f%%", v.UsedPercent)
 }
 
 func getHostname() string {
@@ -35,11 +36,14 @@ func getDisk() string {
 	return fmt.Sprintf("Total %v, Free %v, Used %2.f%%", bci(diskStat.Total), bci(diskStat.Free), diskStat.UsedPercent)
 }
 
+func getLoad() string {
+	v, _ := load.Avg()
+	return fmt.Sprintf("load averages %.2f, %.2f, %.2f", v.Load1, v.Load5, v.Load15)
+}
+
 func getSystemInfo(w http.ResponseWriter) {
-	json.NewEncoder(w).Encode(map[string]string{
-		"hostname": getHostname(),
-		"mem":      getMem(),
-		"disk":     getDisk(),
+	json.NewEncoder(w).Encode([]string{
+		fmt.Sprintf("m/%s, %s, %s", getHostname(), getMem(), getLoad()), getDisk(),
 	})
 }
 
