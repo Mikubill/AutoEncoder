@@ -222,11 +222,13 @@ cd build
 ninja
 ninja install
 
+export CFLAGS="$CFLAGS -I/usr/local/include/avisynth/"
+export CXXFLAGS="$CXXFLAGS -I/usr/local/include/avisynth/"
 # build vs-plugin: ffms2
 cd /opt/vs
 git clone --depth 1 https://github.com/FFMS/ffms2
 cd ffms2
-./autogen.sh
+./autogen.sh --enable-avisynth 
 ./configure --cache-file=/tmp/configure.cache --prefix=/usr/local 
 make -j$(nproc)
 make install

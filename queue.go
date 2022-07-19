@@ -1,16 +1,15 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path"
 	"strings"
 	"time"
 
+	"github.com/go-cmd/cmd"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -99,24 +98,24 @@ func runTask(task *Task) {
 				}
 			}
 		}
-		cmd := exec.CommandContext(context.Background(), c[0], c[1:]...)
+		cmdToExec := cmd.NewCmd(c[0], c[1:]...)
 		if cmdlines.Bash {
-			cmd = exec.CommandContext(context.Background(), "bash", "-c", strings.Join(c, " "))
+			cmdToExec = cmd.NewCmd("bash", "-c", strings.Join(c, " "))
 		}
-		task.cancelFunc = append(task.cancelFunc, newCancelFunction(cmd))
-		streamer.Write("Running command: " + cmd.String() + "\n")
+		task.cancelFunc = append(task.cancelFunc, newCancelFunction(cmdToExec))
+		streamer.Write("+ Running command: "+strings.Join(c, " "), onFinal)
 
-		cmd.Env = os.Environ()
+		cmdToExec.Env = os.Environ()
 		for k, v := range task.Req.Envs {
 			if !hasKey(tpl.Envs, k) {
 				continue
 			}
-			cmd.Env = append(cmd.Env, k+"="+v)
+			cmdToExec.Env = append(cmdToExec.Env, k+"="+v)
 		}
-		cmd.Dir = wksDir
+		cmdToExec.Dir = wksDir
 		// manually set binary dir
 
-		err := runCmdAsync(streamer, cmd)
+		err := runCmdAsync(streamer, cmdToExec, task.ID)
 		if err != nil {
 			log.Printf("[%d] error: %s", task.ID, err)
 			task.Status = "error"
@@ -131,48 +130,36 @@ func runTask(task *Task) {
 	}
 }
 
-func runCmdAsync(streamer *Streamer, cmd *exec.Cmd) error {
-	log.Debugf("executing command: %s", cmd.String())
+func runCmdAsync(streamer *Streamer, c *cmd.Cmd, id int) error {
+	log.Debugf("executing command: %v %+v", c.Name, c.Args)
+	statusChan := c.Start() // non-blocking
 
-	// cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: uint32(os.Getuid()), Gid: uint32(os.Getgid())}}
-	// log.Debugf("syscall option: %+v", cmd.SysProcAttr.Credential)
-
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Warnf("error creating stdout pipe for cmd: %s", err)
-		// return err
-	} else {
-		scanner := bufio.NewScanner(cmdReader)
-		go func() {
-			for scanner.Scan() {
-				streamer.Write(scanner.Text())
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	go func() {
+		for range ticker.C {
+			status := c.Status()
+			CombinedOutput := ""
+			if len(status.Stdout) > 0 {
+				CombinedOutput += strings.Join(status.Stdout, "\n")
 			}
-		}()
-	}
-
-	cmdReader2, err := cmd.StderrPipe()
-	if err != nil {
-		log.Warnf("error creating stdout pipe for cmd: %s", err)
-		// return err
-	} else {
-		scanner2 := bufio.NewScanner(cmdReader2)
-		go func() {
-			for scanner2.Scan() {
-				streamer.Write(scanner2.Text())
+			if len(status.Stderr) > 0 {
+				CombinedOutput += strings.Join(status.Stderr, "\n")
 			}
-		}()
-	}
+			streamer.Write(CombinedOutput, onLoad)
+		}
+	}()
 
-	err = cmd.Start()
-	if err != nil {
-		log.Warnf("error starting cmd: %s", err)
-		return err
+	status := <-statusChan
+	CombinedOutput := ""
+	if len(status.Stdout) > 0 {
+		CombinedOutput += strings.Join(status.Stdout, "\n")
 	}
+	if len(status.Stderr) > 0 {
+		CombinedOutput += strings.Join(status.Stderr, "\n")
+	}
+	streamer.Write(CombinedOutput, onFinal)
+	log.Printf("[%d] command finished with status: %+v", id, status.Exit)
 
-	err = cmd.Wait()
-	if err != nil {
-		log.Warnf("error waiting for cmd: %s", err)
-		return err
-	}
 	return nil
 }
