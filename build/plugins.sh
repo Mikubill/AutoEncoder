@@ -686,7 +686,7 @@ cd /opt/avs
 git clone --depth 1 https://github.com/MasterNobody/avs2yuv 
 cd avs2yuv
 make 
-ln -s avs2yuv /usr/local/bin/avs2yuv
+ln -s /opt/avs/avs2yuv/avs2yuv /usr/local/bin/avs2yuv
 
 # build avs-plugin: assrender
 cd /opt/avs
