@@ -22,9 +22,9 @@ encode-x264-vsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
+      cmd: rm encoded.mkv input.aac %videofile%  
 
-encode-x264-vsbase:
+encode-x264-avsbase:
   name: encode-x264-avsbase
   description: 字幕压制模版，使用avs处理并渲染字幕，x264压制。
   inputs:
@@ -48,7 +48,7 @@ encode-x264-vsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.avs
+      cmd: rm encoded.mkv input.aac %videofile%
 
 encode-x265-vsbase:
   name: encode-x265-vsbase
@@ -74,7 +74,7 @@ encode-x265-vsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
+      cmd: rm encoded.mkv input.aac %videofile% 
 
 encode-x265-avsbase:
   name: encode-x265-avsbase
@@ -100,7 +100,7 @@ encode-x265-avsbase:
     - name: remux
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
-      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.avs
+      cmd: rm encoded.mkv input.aac %videofile% 
       
 ffmpeg-info:
   name: ffmpeg-info
