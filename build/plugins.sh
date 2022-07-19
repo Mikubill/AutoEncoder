@@ -680,3 +680,21 @@ ninja install
 #     ./autogen.sh && bash -c ./configure --cache-file=/tmp/configure.cache && \
 #     make -j$(nproc) && make install && \
 #     cd .. && rm -rf vapoursynth-plugins
+
+# build avs-exec: avs2yuv
+cd /opt/avs
+git clone --depth 1 https://github.com/MasterNobody/avs2yuv 
+cd avs2yuv
+make 
+ln -s avs2yuv /usr/local/bin/avs2yuv
+
+# build avs-plugin: assrender
+cd /opt/avs
+git clone --depth 1 https://github.com/pinterf/assrender
+cd assrender
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ../src
+make -j$(nproc)
+make install
+

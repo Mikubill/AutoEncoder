@@ -1,2 +1,2 @@
-LWLibavVideoSource("encoded.mkv")
-TextSub("subtitle.ass")
+LWLibavVideoSource("input.mkv")
+AssRender("subtitle.ass")

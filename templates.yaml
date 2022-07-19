@@ -24,6 +24,32 @@ encode-x264-vsbase:
     - name: 清理工作文件
       cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
 
+encode-x264-vsbase:
+  name: encode-x264-avsbase
+  description: 字幕压制模版，使用avs处理并渲染字幕，x264压制。
+  inputs:
+    vsfile: file|/opt/example/input-b1.avs
+    videofile: file|/opt/example/example.mkv
+    assfile: file|/opt/example/subtitle.ass
+    x264param: value|--level 4.1 --crf 20 --tune animation --keyint 480 --min-keyint 1 --threads 0 --bframes 9 --qpmin 0 --qpmax 69  --b-adapt 2 --ref 9 --chroma-qp-offset -2 --vbv-bufsize 15000 --vbv-maxrate 12000 --qcomp 0.7 --rc-lookahead 80 --aq-strength 0.9 --deblock 1:1  --direct auto  --merange 32 --me esa --subme 10 --trellis 2 --psy-rd 0.6:0.10 --no-fast-pskip --aq-mode 3
+  envs: 
+  steps: 
+    - name: 音频提取
+      cmd: ffmpeg -y -i %videofile% -c:a copy input.aac
+    - name: 处理输入文件
+      cmd: cp %vsfile% input.avs
+    - name: 处理输入文件  
+      cmd: sed -i s#input.mkv#%videofile%#g input.avs 
+    - name: 处理输入文件  
+      cmd: sed -i s#subtitle.ass#%assfile%#g input.avs
+    - name: VapourSynth解析&x264压制
+      bash: true
+      cmd: avs2yuv input.avs -o - | x264 --no-progress --demuxer y4m - %x264param% -o encoded.mkv
+    - name: remux
+      cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
+    - name: 清理工作文件
+      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.avs
+
 encode-x265-vsbase:
   name: encode-x265-vsbase
   description: 字幕压制模版，使用vs处理并渲染字幕，x265压制。
@@ -49,6 +75,32 @@ encode-x265-vsbase:
       cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
     - name: 清理工作文件
       cmd: rm encoded.mkv input.aac %videofile% %assfile% input.vpy
+
+encode-x265-avsbase:
+  name: encode-x265-avsbase
+  description: 字幕压制模版，使用avs处理并渲染字幕，x265压制。
+  inputs:
+    vsfile: file|/opt/example/input-b1.avs
+    videofile: file|/opt/example/example.mkv
+    assfile: file|/opt/example/subtitle.ass
+    x265param: value|--tune animation --crf 23 
+  envs: 
+  steps: 
+    - name: 音频提取
+      cmd: ffmpeg -y -i %videofile% -c:a copy input.aac
+    - name: 处理输入文件
+      cmd: cp %vsfile% input.avs
+    - name: 处理输入文件  
+      cmd: sed -i s#input.mkv#%videofile%#g input.avs
+    - name: 处理输入文件  
+      cmd: sed -i s#subtitle.ass#%assfile%#g input.avs
+    - name: VapourSynth解析&x265压制
+      bash: true
+      cmd: avs2yuv input.avs -o - | x265 --no-progress --y4m - %x265param% --output encoded.mkv
+    - name: remux
+      cmd: ffmpeg -y -i encoded.mkv -i input.aac -c:v copy -c:a copy output.mp4
+    - name: 清理工作文件
+      cmd: rm encoded.mkv input.aac %videofile% %assfile% input.avs
       
 ffmpeg-info:
   name: ffmpeg-info
