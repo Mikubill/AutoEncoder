@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -18,7 +17,6 @@ type Streamer struct {
 	buf        *bytes.Buffer
 	lastUpdate time.Time
 	task       *Task
-	lock       sync.Mutex
 }
 
 func newStreamer(task *Task) *Streamer {

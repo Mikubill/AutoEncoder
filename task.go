@@ -39,19 +39,11 @@ type Task struct {
 	Req       TaskReq   `json:"config"`
 	StartTime time.Time `json:"starttime"`
 
-	cancelFunc []CancelFunc
-	runLock    sync.Mutex
+	cmdList []*cmd.Cmd
+	runLock sync.Mutex
 }
 
 var activeTasks = make(map[int]*Task)
-
-type CancelFunc func()
-
-func newCancelFunction(cmd *cmd.Cmd) CancelFunc {
-	return func() {
-		cmd.Stop()
-	}
-}
 
 func getTasksList(w http.ResponseWriter, page int) {
 	// fetch data from db
@@ -172,9 +164,9 @@ func deleteTask(w http.ResponseWriter, id int) {
 	if task.Status == "deleted" {
 		return
 	}
-	if task.cancelFunc != nil {
-		for _, cancelFunc := range task.cancelFunc {
-			cancelFunc()
+	if task.cmdList != nil {
+		for _, cmd := range task.cmdList {
+			cmd.Stop()
 		}
 	}
 	wksDir := path.Join(config.WksPath, fmt.Sprintf("task-%d", task.ID))
@@ -196,13 +188,13 @@ func stopTask(w http.ResponseWriter, id int) {
 	}
 	task.runLock.Lock()
 	defer task.runLock.Unlock()
-	if task.cancelFunc != nil {
-		for _, cancelFunc := range task.cancelFunc {
-			cancelFunc()
+	task.Status = "stopped"
+	if task.cmdList != nil {
+		for _, cmd := range task.cmdList {
+			cmd.Stop()
 		}
 	}
 	time.Sleep(500 * time.Millisecond)
-	task.Status = "stopped"
 	saveTask(task)
 }
 

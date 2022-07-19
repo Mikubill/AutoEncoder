@@ -102,7 +102,7 @@ func runTask(task *Task) {
 		if cmdlines.Bash {
 			cmdToExec = cmd.NewCmd("bash", "-c", strings.Join(c, " "))
 		}
-		task.cancelFunc = append(task.cancelFunc, newCancelFunction(cmdToExec))
+		task.cmdList = append(task.cmdList, cmdToExec)
 		streamer.Write("+ Running command: "+strings.Join(c, " "), onFinal)
 
 		cmdToExec.Env = os.Environ()

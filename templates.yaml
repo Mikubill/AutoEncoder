@@ -2,7 +2,7 @@ encode-x264-vsbase:
   name: encode-x264-vsbase
   description: 字幕压制模版，使用vs处理并渲染字幕，x264压制。
   inputs:
-    vsfile: file|/opt/example/input-b4.vpy
+    vsfile: file|/opt/example/input-b3.vpy
     videofile: file|/opt/example/example.mkv
     assfile: file|/opt/example/subtitle.ass
     x264param: value|--level 4.1 --crf 20 --tune animation --keyint 480 --min-keyint 1 --threads 0 --bframes 9 --qpmin 0 --qpmax 69  --b-adapt 2 --ref 9 --chroma-qp-offset -2 --vbv-bufsize 15000 --vbv-maxrate 12000 --qcomp 0.7 --rc-lookahead 80 --aq-strength 0.9 --deblock 1:1  --direct auto  --merange 32 --me esa --subme 10 --trellis 2 --psy-rd 0.6:0.10 --no-fast-pskip --aq-mode 3
@@ -54,7 +54,7 @@ encode-x265-vsbase:
   name: encode-x265-vsbase
   description: 字幕压制模版，使用vs处理并渲染字幕，x265压制。
   inputs:
-    vsfile: file|/opt/example/input-b4.vpy
+    vsfile: file|/opt/example/input-b3.vpy
     videofile: file|/opt/example/example.mkv
     assfile: file|/opt/example/subtitle.ass
     x265param: value|--tune animation --crf 23 
